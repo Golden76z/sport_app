@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "22533708652",
+    "project_id": "sport-app-123",
+    "storage_bucket": "sport-app-123.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:22533708652:android:da96dc2975c9b9df68b149",
+        "android_client_info": {
+          "package_name": "com.damienp.sport_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmEn5w3IyHMeAj58ojViprspOt1QT2vdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
