@@ -1,3 +1,6 @@
+# Google Credentials
+/lib/firebase_options.dart
+
 # Miscellaneous
 *.class
 *.log
