@@ -9,7 +9,20 @@ void main() {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
         useMaterial3: true,
       ),
-      home: const RegisterView(),
+      home: const HomePage(),
       )
     );
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title:  const Text("HomePage"),
+      ),
+    );
+  }
 }
