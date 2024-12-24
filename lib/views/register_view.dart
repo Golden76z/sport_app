@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:sport_app/firebase_options.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -37,19 +35,7 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Register")
-      ,), 
-      // Column means that everything will display in one column
-      body: FutureBuilder(
-        future: Firebase.initializeApp(
-                  options: DefaultFirebaseOptions.currentPlatform,
-        ),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return Column(
+    return Column(
           children: [
             // Display an empty text field on the screen
             TextField(
@@ -94,7 +80,7 @@ class _RegisterViewState extends State<RegisterView> {
               // Function to create a new user
               onPressed: () async {
         
-                final username = _username.text;
+                // final username = _username.text;
                 final email = _email.text;
                 final password = _password.text;
                 final passwordConfirm = _passwordConfirm.text;
@@ -126,12 +112,6 @@ class _RegisterViewState extends State<RegisterView> {
               }, 
               child: const Text('Register')),
           ],
-        ); 
-        default:
-          return const Text('Loading...');
-          }
-        },
-      )
-    );
+        );
   }
 }

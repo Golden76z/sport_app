@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:sport_app/firebase_options.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -31,19 +29,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Login")
-      ,), 
-      // Column means that everything will display in one column
-      body: FutureBuilder(
-        future: Firebase.initializeApp(
-                  options: DefaultFirebaseOptions.currentPlatform,
-        ),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return Column(
+    return Column(
           children: [
             // Display an empty text field on the screen
             TextField(
@@ -102,13 +88,12 @@ class _LoginViewState extends State<LoginView> {
                 }
               }, 
               child: const Text('Login')),
+            TextButton(
+              onPressed: () {
+
+              }, 
+              child: const Text('Not registered yet? Register here !'))
           ],
-        ); 
-        default:
-          return const Text('Loading...');
-          }
-        },
-      )
-    );
+        );
   }
 }
