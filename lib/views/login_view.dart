@@ -69,7 +69,10 @@ class _LoginViewState extends State<LoginView> {
                       email: email, 
                       password: password
                       );
-                      print(userCredentials);
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/home/',
+                      (route) => false, 
+                    );;
       
                   // In case of wrong credentials
                   } on FirebaseAuthException catch (e) {
