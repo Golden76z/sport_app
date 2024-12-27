@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:sport_app/firebase_options.dart';
 import 'package:sport_app/views/login_view.dart';
 import 'package:sport_app/views/register_view.dart';
+import 'package:sport_app/views/verify_email_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,23 +37,17 @@ class HomePage extends StatelessWidget {
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
-              // Checking the user informations, to see if he's logged or email verified
-              // final user = FirebaseAuth.instance.currentUser;
-              // print(user);
-              // if (user?.emailVerified == null) {
-              //   print("User not registered");
-              // } else {
-              //   final emailVerified = user?.emailVerified ?? false;
-              //   if (emailVerified) {
-              //     print("You email is verified");
-              //     return const Text('Done');
-              //   } else {
-              //     print("You email isn't verified");
-              //     return const VerifyEmailView();
-              //   }
-              // }
-              // return const Text('test');
-              return const LoginView();
+              final user = FirebaseAuth.instance.currentUser;
+              if (user != null) {
+                if (user.emailVerified) {
+                  print('Your email is verified');
+                } else {
+                  return const VerifyEmailView();
+                }
+              } else {
+                return const LoginView();
+              }
+              return const Text('Done');
             default:
               //Showing an indicator to the screen
               return const CircularProgressIndicator();
