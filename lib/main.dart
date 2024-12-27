@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:sport_app/constants/routes.dart';
 import 'package:sport_app/firebase_options.dart';
 import 'package:sport_app/views/login_view.dart';
 import 'package:sport_app/views/register_view.dart';
 import 'package:sport_app/views/verify_email_view.dart';
-import 'dart:developer' as devtools show log;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,9 +19,9 @@ void main() {
 
       // Setting up the routes of our functions
       routes: {
-        "/home/": (context) => HomePage(),
-        "/login/": (context) => LoginView(),
-        "/register/": (context) => RegisterView()
+        homeRoute: (context) => HomePage(),
+        loginRoute: (context) => LoginView(),
+        registerRoute: (context) => RegisterView()
       },
       )
     );
@@ -78,7 +78,7 @@ class NotesView extends StatelessWidget {
                 if (shouldLogOut) {
                   await FirebaseAuth.instance.signOut();
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/login/',
+                    loginRoute,
                     (route) => false, 
                     );
                 }

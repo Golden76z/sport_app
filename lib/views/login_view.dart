@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
+import 'package:sport_app/constants/routes.dart';
+
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
@@ -65,13 +67,12 @@ class _LoginViewState extends State<LoginView> {
                   // Code running if there's no errors
                   try {
                     // await because this function return a Future
-                  final userCredentials = 
                     await FirebaseAuth.instance.signInWithEmailAndPassword(
                       email: email, 
                       password: password
                       );
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/home/',
+                      homeRoute,
                       (route) => false, 
                     );
       
@@ -97,7 +98,7 @@ class _LoginViewState extends State<LoginView> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/register/', 
+                    registerRoute, 
                     (route) => false
                   );
                 }, 
