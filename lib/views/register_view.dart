@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:sport_app/constants/routes.dart';
+import 'package:sport_app/services/auth/auth_exceptions.dart';
+import 'package:sport_app/services/auth/auth_service.dart';
 import 'package:sport_app/utilities/show_error_dialog.dart';
 
 class RegisterView extends StatefulWidget {
@@ -95,28 +95,35 @@ class _RegisterViewState extends State<RegisterView> {
                   } else {
                     try {
                     // await because this function return a Future
-                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                    await AuthService.firebase().createUser(
                       email: email, 
                       password: password
                     );
-                    final user = FirebaseAuth.instance.currentUser;
-                    await user?.sendEmailVerification();
+                    // final user = AuthService.firebase().currentUser;
+                    AuthService.firebase().sendEmailVerification();
 
                     // Sending user to verify view after registration
                     Navigator.of(context).pushNamed(verifyEmailRoute);
-                  } on FirebaseAuthException catch(e) {
-                    switch (e.code) {
-                      case "email-already-in-use":
-                        await showErrorDialog(context, "Email already used");
-                      case "invalid-email":
-                        await showErrorDialog(context, "Invalid Email format");
-                      case "weak-password":
-                        await showErrorDialog(context, "Weak password");
-                      default:
-                        await showErrorDialog(context, 'Error: ${e.code}');
-                    }
-                  } catch(e) {
-                    await showErrorDialog(context, e.toString()); 
+                  } on EmailAlreadyUsedAuthException {
+                    await showErrorDialog(
+                      context, 
+                      "Email already used"
+                    );
+                  } on EmailFormatAuthException {
+                    await showErrorDialog(
+                      context, 
+                      "Invalid Email format"
+                    );
+                  } on WeakPasswordAuthException {
+                    await showErrorDialog(
+                      context, 
+                      "Weak password"
+                    );
+                  } on GenericAuthException {
+                    await showErrorDialog(
+                      context, 
+                      "Authentication error"
+                    );
                   }
                 }
               }, 

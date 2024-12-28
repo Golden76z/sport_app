@@ -1,8 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
-
 import 'package:sport_app/constants/routes.dart';
+import 'package:sport_app/services/auth/auth_exceptions.dart';
+import 'package:sport_app/services/auth/auth_service.dart';
 import 'package:sport_app/utilities/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
@@ -68,14 +67,14 @@ class _LoginViewState extends State<LoginView> {
                   // Code running if there's no errors
                   try {
                     // await because this function return a Future
-                    await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    await AuthService.firebase().logIn(
                       email: email, 
                       password: password
                     );
 
                     // Check if the user has verified his email before sending him to Main UI
-                    final user = FirebaseAuth.instance.currentUser;
-                    final emailVerified = user?.emailVerified ?? false;
+                    final user = AuthService.firebase().currentUser;
+                    final emailVerified = user?.isEmailVerified ?? false;
                     if (emailVerified) {
                       Navigator.of(context).pushNamedAndRemoveUntil(
                         homeRoute,
@@ -88,21 +87,17 @@ class _LoginViewState extends State<LoginView> {
                       );                     
                     }
 
-      
                   // In case of wrong credentials
-                  } on FirebaseAuthException catch (e) {
-                    devtools.log(e.code);
-                    switch (e.code) {
-                      case "invalid-email":
-                        await showErrorDialog(context, "Invalid email format");
-                      case "invalid-credential":
-                        await showErrorDialog(context, "Invalid e-mail or password");
-                      default:
-                        await showErrorDialog(context, 'Error: ${e.code}');
-                    }
-                  // Works like an else statement
-                  } catch (e) {
-                    await showErrorDialog(context, e.toString());
+                  } on WrongCredentialsAuthException {
+                    await showErrorDialog(
+                      context, 
+                      "Invalid email format"
+                    );
+                  } on GenericAuthException {
+                    await showErrorDialog(
+                      context, 
+                      "Authentication error"
+                    );
                   }
                 }, 
                 child: const Text('Login')),
