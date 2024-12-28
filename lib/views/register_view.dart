@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
 import 'package:sport_app/constants/routes.dart';
+import 'package:sport_app/utilities/show_error_dialog.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -91,7 +92,7 @@ class _RegisterViewState extends State<RegisterView> {
                   final passwordConfirm = _passwordConfirm.text;
       
                   if (password != passwordConfirm) {
-                    devtools.log("Password doesn't match");
+                    await showErrorDialog(context, "Password doesn't match");
                   } else {
                     try {
                     // await because this function return a Future
@@ -104,16 +105,18 @@ class _RegisterViewState extends State<RegisterView> {
                   } on FirebaseAuthException catch(e) {
                     switch (e.code) {
                       case "email-already-in-use":
-                        devtools.log("Email already used");
+                        await showErrorDialog(context, "Email already used");
                       case "invalid-email":
-                        devtools.log("Invalid Email format");
+                        await showErrorDialog(context, "Invalid Email format");
                       case "weak-password":
-                        devtools.log("Weak password");
+                        await showErrorDialog(context, "Weak password");
                       default:
-                        devtools.log(e.code);
+                        await showErrorDialog(context, 'Error: ${e.code}');
                     }
+                  } catch(e) {
+                    await showErrorDialog(context, e.toString()); 
                   }
-                  }
+                }
                 }, 
                 child: const Text('Register')),
 

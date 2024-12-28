@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
 import 'package:sport_app/constants/routes.dart';
+import 'package:sport_app/utilities/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -81,17 +82,15 @@ class _LoginViewState extends State<LoginView> {
                     devtools.log(e.code);
                     switch (e.code) {
                       case "invalid-email":
-                        devtools.log("Invalid email format");
+                        await showErrorDialog(context, "Invalid email format");
                       case "invalid-credential":
-                        devtools.log("Invalid credentials");
+                        await showErrorDialog(context, "Invalid e-mail or password");
                       default:
-                        devtools.log("Invalid password"); 
+                        await showErrorDialog(context, 'Error: ${e.code}');
                     }
                   // Works like an else statement
                   } catch (e) {
-                    devtools.log("something bad happened");
-                    devtools.log(e.toString());
-                    devtools.log(e.runtimeType.toString());
+                    await showErrorDialog(context, e.toString());
                   }
                 }, 
                 child: const Text('Login')),
