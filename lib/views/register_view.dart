@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
 
 import 'package:sport_app/constants/routes.dart';
 import 'package:sport_app/utilities/show_error_dialog.dart';
@@ -96,12 +95,15 @@ class _RegisterViewState extends State<RegisterView> {
                   } else {
                     try {
                     // await because this function return a Future
-                    final userCredentials = 
                     await FirebaseAuth.instance.createUserWithEmailAndPassword(
                       email: email, 
                       password: password
-                      );
-                      devtools.log(userCredentials.toString());
+                    );
+                    final user = FirebaseAuth.instance.currentUser;
+                    await user?.sendEmailVerification();
+
+                    // Sending user to verify view after registration
+                    Navigator.of(context).pushNamed(verifyEmailRoute);
                   } on FirebaseAuthException catch(e) {
                     switch (e.code) {
                       case "email-already-in-use":
@@ -117,18 +119,18 @@ class _RegisterViewState extends State<RegisterView> {
                     await showErrorDialog(context, e.toString()); 
                   }
                 }
-                }, 
-                child: const Text('Register')),
+              }, 
+              child: const Text('Register')),
 
-                // TextButton to go back to login view
-                TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    loginRoute,
-                    (route) => false, 
-                    );
-                }, 
-                child: const Text('Already have an account? Go to login !')),
+              // TextButton to go back to login view
+              TextButton(
+              onPressed: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  loginRoute,
+                  (route) => false, 
+                );
+              }, 
+              child: const Text('Already have an account? Go to login !')),
             ],
           ),
     );

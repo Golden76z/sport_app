@@ -21,7 +21,8 @@ void main() {
       routes: {
         homeRoute: (context) => HomePage(),
         loginRoute: (context) => LoginView(),
-        registerRoute: (context) => RegisterView()
+        registerRoute: (context) => RegisterView(),
+        verifyEmailRoute: (context) => VerifyEmailView(),
       },
       )
     );
