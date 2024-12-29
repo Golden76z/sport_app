@@ -91,7 +91,7 @@ class _LoginViewState extends State<LoginView> {
                   } on WrongCredentialsAuthException {
                     await showErrorDialog(
                       context, 
-                      "Invalid email format"
+                      "Invalid email or password"
                     );
                   } on GenericAuthException {
                     await showErrorDialog(
