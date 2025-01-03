@@ -17,6 +17,7 @@ class _NewNoteViewState extends State<NewNoteView> {
 
   @override
   void initState() {
+    // _note = DatabaseNote(id: 1, userId: 1, text: 'test', isSyncedWithCloud: true);
     _notesService = NotesService();
     _textController = TextEditingController();
     super.initState();
@@ -43,12 +44,12 @@ class _NewNoteViewState extends State<NewNoteView> {
     final existingNote = _note;
     if (existingNote != null) {
       return existingNote;
-    } else {
-      final currentuser = AuthService.firebase().currentUser!;
-      final email = currentuser.email!;
-      final owner = await _notesService.getUser(email: email);
-      return _notesService.createNote(owner: owner);
     }
+    final currentuser = AuthService.firebase().currentUser!;
+    final email = currentuser.email!;
+    final owner = await _notesService.getUser(email: email);
+    final note = await _notesService.createNote(owner: owner);
+    return note;
   }
 
   void _deleteNoteIfTextEmpty() {
