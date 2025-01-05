@@ -29,7 +29,10 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Notes'),
+        title: const Text(
+          'Your Notes',
+          style: TextStyle(fontWeight: FontWeight.bold,)
+          ,),
         actions: [
           IconButton(
             onPressed: () {
@@ -57,7 +60,9 @@ class _NotesViewState extends State<NotesView> {
               ),
             ];
           },)
-        ]
+        ],
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
       ),
       body: StreamBuilder(
         stream: _notesService.allNotes(ownerUserId: userId), 
