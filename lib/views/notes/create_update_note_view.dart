@@ -93,7 +93,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Note'),
+        title: const Text('New Note', style: TextStyle(fontWeight: FontWeight.bold,)),
         actions: [
           IconButton(
             onPressed: () async {
@@ -106,7 +106,9 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
             }, 
             icon: const Icon(Icons.share)
           )
-        ]
+        ],
+        backgroundColor: Colors.redAccent[200],
+        foregroundColor: Colors.white,
       ),
       body: FutureBuilder(
         future: createOrGetExistingNote(context), 

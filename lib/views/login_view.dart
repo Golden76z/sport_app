@@ -33,7 +33,11 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(
+        title: const Text('Login', style: TextStyle(fontWeight: FontWeight.bold,)),
+        backgroundColor: Colors.redAccent[200],
+        foregroundColor: Colors.white,
+        ),
       body: Column(
             children: [
               // Display an empty text field on the screen
@@ -100,7 +104,8 @@ class _LoginViewState extends State<LoginView> {
                     );
                   }
                 }, 
-                child: const Text('Login')),
+                child: const Text('Login'),
+                ),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pushNamedAndRemoveUntil(

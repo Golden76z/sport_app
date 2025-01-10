@@ -39,7 +39,11 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Register')),
+      appBar: AppBar(
+        title: const Text('Register', style: TextStyle(fontWeight: FontWeight.bold,)),
+        backgroundColor: Colors.redAccent[200],
+        foregroundColor: Colors.white,
+        ),
       body: Column(
             children: [
               // Display an empty text field on the screen
