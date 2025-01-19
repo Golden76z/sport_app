@@ -50,7 +50,7 @@ class _NotesViewState extends State<NotesView> {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     loginRoute,
                     (route) => false, 
-                    );
+                  );
                 }
             };
           }, itemBuilder: (context) {
@@ -64,7 +64,8 @@ class _NotesViewState extends State<NotesView> {
         ],
         backgroundColor: Colors.redAccent[200],
         foregroundColor: Colors.white,
-      ),
+      )
+      ,
       body: StreamBuilder(
         stream: _notesService.allNotes(ownerUserId: userId), 
         builder: (context, snapshot) {
@@ -92,6 +93,62 @@ class _NotesViewState extends State<NotesView> {
               return const CircularProgressIndicator();  
           }
         },
+      ),
+      bottomNavigationBar: Container(
+        height: 60,
+        // decoration: BoxDecoration(
+        //   gradient: LinearGradient(
+        //     colors: [
+        //       Colors.redAccent[200]!,
+        //       const Color.fromARGB(153, 255, 82, 82)!,
+        //       const Color.fromARGB(78, 255, 82, 82)!,
+        //       const Color.fromARGB(0, 255, 240, 174),
+        //     ],
+        //     begin: Alignment.bottomCenter,
+        //     end: Alignment.topCenter,
+        //   ),
+        // ),
+        child: BottomAppBar(
+          color: Colors.redAccent[200], // Make the BottomAppBar background transparent
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                onPressed: () => {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    homeRoute,
+                    (route) => false, 
+                  )
+                }, 
+                icon: const Icon(Icons.home_filled),
+                color: Colors.white,
+              ),
+              const SizedBox(width: 40),
+              IconButton(
+                onPressed: () => {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    homeRoute,
+                    (route) => false, 
+                  )
+                }, 
+                icon: const Icon(Icons.search_rounded),
+                color: Colors.white,
+              ),
+              const SizedBox(width: 40),
+              IconButton(
+                onPressed: () => {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    profileRoute,
+                    (route) => false, 
+                  )
+                }, 
+                icon: const Icon(Icons.account_circle_sharp),
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
