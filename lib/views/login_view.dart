@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport_app/constants/routes.dart';
 import 'package:sport_app/services/auth/auth_exceptions.dart';
 import 'package:sport_app/services/auth/auth_service.dart';
+import 'package:sport_app/services/auth/bloc/auth_bloc.dart';
+import 'package:sport_app/services/auth/bloc/auth_event.dart';
+import 'package:sport_app/services/auth/bloc/auth_state.dart';
 import 'package:sport_app/utilities/dialogs/error_dialog.dart';
 
 class LoginView extends StatefulWidget {
@@ -34,88 +38,64 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login', style: TextStyle(fontWeight: FontWeight.bold,)),
+        title: const Text('Login',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            )),
         backgroundColor: Colors.redAccent[200],
         foregroundColor: Colors.white,
-        ),
+      ),
       body: Column(
-            children: [
-              // Display an empty text field on the screen
-              TextField(
-                controller: _email,
-                enableSuggestions: false,
-                autocorrect: false,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  hintText: "Enter your email"
-                )
-              ),
-              TextField(
-                controller: _password,
-                obscureText: true,
-                enableSuggestions: false,
-                autocorrect: false,
-                decoration:  const InputDecoration(
-                  hintText: 'Enter your password'
-                )
-              ),
-              // Display a text button, child being the content, onPressed is the function
-              TextButton(
-          
-                // Function to create a new user
-                onPressed: () async {
-          
-                  final email = _email.text;
-                  final password = _password.text;
-          
-                  // Code running if there's no errors
-                  try {
-                    // await because this function return a Future
-                    await AuthService.firebase().logIn(
-                      email: email, 
-                      password: password
-                    );
+        children: [
+          // Display an empty text field on the screen
+          TextField(
+              controller: _email,
+              enableSuggestions: false,
+              autocorrect: false,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(hintText: "Enter your email")),
+          TextField(
+              controller: _password,
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
+              decoration:
+                  const InputDecoration(hintText: 'Enter your password')),
+          // Display a text button, child being the content, onPressed is the function
+          BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) async {
+              if (state is AuthStateLoggedOut) {
+                if (state.exception is WrongCredentialsAuthException) {
+                  await showErrorDialog(context, 'Wrong credentials');
+                } else if (state.exception is GenericAuthException) {
+                  await showErrorDialog(context, 'Authentication error');
+                }
+              }
+            },
+            child: TextButton(
+              // Function to create a new user
+              onPressed: () async {
+                final email = _email.text;
+                final password = _password.text;
 
-                    // Check if the user has verified his email before sending him to Main UI
-                    final user = AuthService.firebase().currentUser;
-                    final emailVerified = user?.isEmailVerified ?? false;
-                    if (emailVerified) {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        homeRoute,
-                        (route) => false, 
-                      );
-                    } else {
-                       Navigator.of(context).pushNamedAndRemoveUntil(
-                        verifyEmailRoute,
-                        (route) => false, 
-                      );                     
-                    }
-
-                  // In case of wrong credentials
-                  } on WrongCredentialsAuthException {
-                    await showErrorDialog(
-                      context, 
-                      "Invalid email or password"
-                    );
-                  } on GenericAuthException {
-                    await showErrorDialog(
-                      context, 
-                      "Authentication error"
-                    );
-                  }
-                }, 
-                child: const Text('Login'),
-                ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    registerRoute, 
-                    (route) => false
-                  );
-                }, 
-                child: const Text('Not registered yet? Register here !'))
-            ],
+                context.read<AuthBloc>().add(
+                  AuthEventLogIn(
+                    email, 
+                    password
+                  ),
+                );
+              },
+              child: const Text('Login'),
+            ),
           ),
+          TextButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(registerRoute, (route) => false);
+              },
+              child: const Text('Not registered yet? Register here !'))
+        ],
+      ),
     );
   }
 }
