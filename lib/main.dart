@@ -12,7 +12,6 @@ import 'package:sport_app/views/login_view.dart';
 import 'package:sport_app/views/notes/create_update_note_view.dart';
 import 'package:sport_app/views/notes/notes_view.dart';
 import 'package:sport_app/views/register_view.dart';
-import 'package:sport_app/views/test_widget_view.dart';
 import 'package:sport_app/views/verify_email_view.dart';
 
 void main() {
@@ -30,12 +29,12 @@ void main() {
 
     // Setting up the routes of our functions
     routes: {
-      homeRoute: (context) => NotesView(),
-      loginRoute: (context) => LoginView(),
-      registerRoute: (context) => RegisterView(),
-      verifyEmailRoute: (context) => VerifyEmailView(),
+      // homeRoute: (context) => NotesView(),
+      // loginRoute: (context) => LoginView(),
+      // registerRoute: (context) => RegisterView(),
+      // verifyEmailRoute: (context) => VerifyEmailView(),
       createOrUpdateNoteRoute: (context) => CreateUpdateNoteView(),
-      profileRoute: (context) => ProfileView(),
+      // profileRoute: (context) => ProfileView(),
     },
   ));
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -58,6 +57,8 @@ class HomePage extends StatelessWidget {
           return const VerifyEmailView();
         } else if (state is AuthStateLoggedOut) {
           return const LoginView();
+        } else if (state is AuthStateRegistering) {
+          return const RegisterView();
         } else {
           return const Scaffold(
             body: CircularProgressIndicator(),

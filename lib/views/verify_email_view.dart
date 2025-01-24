@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sport_app/constants/routes.dart';
-import 'package:sport_app/services/auth/auth_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sport_app/services/auth/bloc/auth_bloc.dart';
+import 'package:sport_app/services/auth/bloc/auth_event.dart';
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({super.key});
@@ -18,21 +19,21 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
       body: Column(children: [
         Text("Hi [User's Name], \n\nWe’ve sent a verification email to your inbox. Please check your email to complete the process.\n\nIf you didn’t receive the email, click on the link below\n\nThanks,\n\nThe [Your Application Name] Team"),
         TextButton(
-          onPressed: () async {
-            await AuthService.firebase().sendEmailVerification();
+          onPressed: () {
+            context.read<AuthBloc>().add(
+              const AuthEventSendEmailVerification()
+            );
           }, 
           child: const Text('Send email')
         ),
 
         TextButton(
           onPressed: () async {
-            await AuthService.firebase().logOut();
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              registerRoute, 
-              (route) => false,
-              );
+            context.read<AuthBloc>().add(
+              const AuthEventLogOut()
+            ); 
           }, 
-          child: const Text('Restart')
+          child: const Text('Go back')
         )
       ],)
       );
